@@ -69,11 +69,13 @@ test2
 wait_n_click
     [Arguments]    ${type}    ${locator}
     Wait Until Element Is Visible    ${type}=${locator}    timeout=3
-    Click Element    ${type}=${locator}
+    Wait Until Element Is Enabled    ${type}=${locator}    timeout=3
+    Click Element    ${type}=${locator}    timeout=3
 
 wait_n_input
     [Arguments]    ${type}    ${locator}    ${text}
     Wait Until Element Is Visible    ${type}=${locator}    timeout=3
+    Clear Element Text    ${type}=${locator}
     Input Text    ${type}=${locator}    ${text}
 
 chrome_setup
