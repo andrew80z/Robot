@@ -4,6 +4,7 @@ Library           Selenium2Library
 Variables         locators.py    # elements locators file
 Library           Screenshot
 Library           Collections
+Library           String
 
 *** Variables ***
 ${login}          WHITA_jiwanski
@@ -37,7 +38,7 @@ test1
     Comment    Open competitions section
     wait_n_click    xpath    ${competite_section}
     Comment    Select "Home" in first row of Premeire League section
-    wait_n_click    xpath     ${win_home_1st_row}
+    wait_n_click    xpath    ${win_home_1st_row}
     Comment    Input bet amount
     wait_n_input    xpath    ${bet_input}    ${bet_amount}
     Comment    Verification of odds
@@ -45,6 +46,23 @@ test1
     Comment    Verification of returns
     check_element_is_present    xpath    ${returns_1}
     check_element_is_present    xpath    ${returns_2}
+    [Teardown]    Close Browser
+
+test2
+    [Documentation]    *Kalamba test task*
+    ...
+    ...    - Navigate to specified URL
+    ...    - Verify that page contains text "Your full name"
+    ...    - Verify that page do not contains text "Your sfull"
+    Comment    Set test url
+    ${url}=    Set Variable    http://enterprise.github.com/contact
+    Comment    Setup chrome to run in full screen without warnings
+    chrome_setup    ${url}
+    Comment    Check presence
+    ${text_to_search}=    Generate Random String    10    [NUMBERS]abcdef
+    log    Random string is: ${text_to_search}
+    Page Should Contain    ${text_to_search}
+    Page Should Not Contain    Your sfull
     [Teardown]    Close Browser
 
 *** Keywords ***
