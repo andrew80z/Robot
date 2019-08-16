@@ -13,3 +13,8 @@ bet_input =       "//div[@class=\"betslip-selection__stake-container betslip-sel
 odds_element =     "//span[@class=\"betslip-selection__price\"]"
 returns_1 =       "//div[@class=\"betslip-selection__estimated-returns\"]/span/span"
 returns_2 =       "//span[@id=\"total-to-return-price\"]"
+
+
+
+
+option_locator = "//button[@class=\"btn btn-warning dropdown-toggle\"]"

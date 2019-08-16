@@ -10,6 +10,7 @@ Library           String
 ${login}          WHITA_jiwanski
 ${password}       GranadaWH07
 ${bet_amount}     0.05
+${timeout}        10
 
 *** Test Cases ***
 test1
@@ -65,12 +66,27 @@ test2
     Page Should Not Contain    Your sfull
     [Teardown]    Close Browser
 
+test3
+    [Documentation]    *Kalamba test task*
+    ...
+    ...    - Navigate to specified URL
+    ...    - Verify that page contains text "Your full name"
+    ...    - Verify that page do not contains text "Your sfull"
+    Comment    Set test url
+    ${url}=    Set Variable    https://www.jquery-az.com/bootstrap4/demo.php?ex=79.0_1
+    Comment    Setup chrome to run in full screen and start
+    chrome_setup    ${url}
+    Wait Until Element Is Visible    xpath=${option_locator}    timeout=${timeout}
+    Click Element    xpath=${option_locator}
+    Comment    select_element_from_dropdown    ${option_locator}    options    Bottom-Dollar Marketse
+    [Teardown]    Close Browser
+
 *** Keywords ***
 wait_n_click
     [Arguments]    ${type}    ${locator}
-    Wait Until Element Is Visible    ${type}=${locator}    timeout=3
-    Wait Until Element Is Enabled    ${type}=${locator}    timeout=3
-    Click Element    ${type}=${locator}    timeout=3
+    Wait Until Element Is Visible    ${type}:${locator}    timeout=3
+    Wait Until Element Is Enabled    ${type}:${locator}    timeout=3
+    Click Element    ${type}:${locator}
 
 wait_n_input
     [Arguments]    ${type}    ${locator}    ${text}
@@ -94,3 +110,12 @@ check_element_is_present
     sleep    1
     Wait Until Element Is Visible    ${type}=${locator}    timeout=3
     Element Should Be Visible    ${type}=${locator}
+
+select_element_from_dropdown
+    [Arguments]    ${dd_locator}    ${option_tagname}    ${element_text}
+    Wait Until Element Is Visible    ${dd_locator}    timeout=3
+    Wait Until Element Is Enabled    ${dd_locator}    timeout=3
+    wait_n_click    xpath    ${dd_locator}
+    ${option_element}=    ${dd_locator}/ ${element_text}
+    wait_n_click    xpath    ${option_element}
+    Sleep    10
