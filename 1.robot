@@ -3,7 +3,7 @@ Library           DateTime
 
 *** Test Cases ***
 date
-    [Documentation]    THis is my test which prints start date and finish date
+    [Documentation]    This is my test which prints start date and finish date
     ${my_dates}=    Create Start and Future timestamps    -25    days
     log    ${my_dates[0]}
     log    ${my_dates[1]}
