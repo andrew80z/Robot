@@ -1,5 +1,6 @@
 *** Settings ***
 Suite Setup
+Test Teardown     screenshot_on_fail
 Library           Selenium2Library
 Variables         locators.py    # elements locators file
 Library           Screenshot
@@ -76,24 +77,11 @@ test3
     ${url}=    Set Variable    https://www.jquery-az.com/bootstrap4/demo.php?ex=79.0_1
     Comment    Setup chrome to run in full screen and start
     chrome_setup    ${url}
-    Wait Until Element Is Visible    xpath=${option_locator}    timeout=${timeout}
-    Click Element    xpath=${option_locator}
-    Comment    select_element_from_dropdown    ${option_locator}    options    Bottom-Dollar Marketse
+    wait_n_click    xpath    ${option_locator}
+    select_element_from_dropdown    ${option_locator}    options    Bottom-Dollar Marketse
     [Teardown]    Close Browser
 
 *** Keywords ***
-wait_n_click
-    [Arguments]    ${type}    ${locator}
-    Wait Until Element Is Visible    ${type}:${locator}    timeout=3
-    Wait Until Element Is Enabled    ${type}:${locator}    timeout=3
-    Click Element    ${type}:${locator}
-
-wait_n_input
-    [Arguments]    ${type}    ${locator}    ${text}
-    Wait Until Element Is Visible    ${type}=${locator}    timeout=3
-    Clear Element Text    ${type}=${locator}
-    Input Text    ${type}=${locator}    ${text}
-
 chrome_setup
     [Arguments]    ${url}
     ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys
@@ -105,17 +93,44 @@ chrome_setup
     Go To    ${url}
     Set Selenium Speed    0.3
 
+firefox_setup
+    [Arguments]    ${url}
+    Open Browser    browser=firefox
+    Go To    ${url}
+
+wait_n_click
+    [Arguments]    ${type}    ${locator}
+    Wait Until Element Is Visible    ${type}=${locator}    timeout=${timeout}
+    Clear Element Text    ${type}=${locator}
+    Click Element    ${type}=${locator}
+
+wait_n_input
+    [Arguments]    ${type}    ${locator}    ${text}
+    Wait Until Element Is Visible    ${type}=${locator}    timeout=${timeout}
+    Clear Element Text    ${type}=${locator}
+    Input Text    ${type}=${locator}    ${text}
+
 check_element_is_present
     [Arguments]    ${type}    ${locator}
     sleep    1
-    Wait Until Element Is Visible    ${type}=${locator}    timeout=3
+    Wait Until Element Is Visible    ${type}=${locator}    timeout=${timeout}
     Element Should Be Visible    ${type}=${locator}
 
 select_element_from_dropdown
     [Arguments]    ${dd_locator}    ${option_tagname}    ${element_text}
-    Wait Until Element Is Visible    ${dd_locator}    timeout=3
-    Wait Until Element Is Enabled    ${dd_locator}    timeout=3
+    Wait Until Element Is Visible    ${dd_locator}    timeout=${timeout}
+    Wait Until Element Is Enabled    ${dd_locator}    timeout=${timeout}
     wait_n_click    xpath    ${dd_locator}
     ${option_element}=    ${dd_locator}/ ${element_text}
     wait_n_click    xpath    ${option_element}
     Sleep    10
+
+check_element_is_active
+    [Arguments]    ${type}    ${locator}
+    sleep    1
+    Wait Until Element Is Visible    ${type}=${locator}    timeout=${timeout}
+    Element Should Be Visible    ${type}=${locator}
+    Wait For Condition
+
+screenshot_on_fail
+    Run Keyword If Test Failed    Capture Page Screenshot
