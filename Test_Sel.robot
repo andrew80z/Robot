@@ -1,7 +1,7 @@
 *** Settings ***
 Suite Setup
 Test Teardown     screenshot_on_fail
-Library           Selenium2Library
+Library           SeleniumLibrary
 Variables         locators.py    # elements locators file
 Library           Screenshot
 Library           Collections
@@ -22,32 +22,32 @@ test1
     ...    - Select event and place a £0.05 bet for the home team to ‘Win’
     ...    - Place bet and assert the odds and returns offered
     ...    - Parameterise the betslip stake so any monetary value can be entered
-    Comment    Comment    Set test url
-    Comment    ${url}=    Set Variable    http://sports.williamhill.com/betting/en-gb/
-    Comment    Comment    Setup chrome to run in full screen without warnings
-    Comment    chrome_setup    ${url}
-    Comment    Comment    Open login dialog
-    Comment    wait_n_click    id    ${accountTabButton}
-    Comment    Comment    Input credentials
-    Comment    wait_n_input    id    ${login_input}    ${login}
-    Comment    wait_n_input    id    ${password_input}    ${password}
-    Comment    Comment    Submit login
-    Comment    wait_n_click    xpath    ${log_sbmt_btn}
-    Comment    Comment    Check that login happened by verifiyng a "Deposit" button
-    Comment    check_element_is_present    xpath    ${deposit_btn}
-    Comment    Comment    Open Football section
-    Comment    wait_n_click    xpath    ${footbal_section}
-    Comment    Comment    Open competitions section
-    Comment    wait_n_click    xpath    ${competite_section}
-    Comment    Comment    Select "Home" in first row of Premeire League section
-    Comment    wait_n_click    xpath    ${win_home_1st_row}
-    Comment    Comment    Input bet amount
-    Comment    wait_n_input    xpath    ${bet_input}    ${bet_amount}
-    Comment    Comment    Verification of odds
-    Comment    check_element_is_present    xpath    ${odds_element}
-    Comment    Comment    Verification of returns
-    Comment    check_element_is_present    xpath    ${returns_1}
-    Comment    check_element_is_present    xpath    ${returns_2}
+    Comment    Set test url
+    ${url}=    Set Variable    http://sports.williamhill.com/betting/en-gb/
+    Comment    Setup chrome to run in full screen without warnings
+    chrome_setup    ${url}
+    Comment    Open login dialog
+    wait_n_click    id    ${accountTabButton}
+    Comment    Input credentials
+    wait_n_input    id    ${login_input}    ${login}
+    wait_n_input    id    ${password_input}    ${password}
+    Comment    Submit login
+    wait_n_click    xpath    ${log_sbmt_btn}
+    Comment    Check that login happened by verifiyng a "Deposit" button
+    check_element_is_present    xpath    ${deposit_btn}
+    Comment    Open Football section
+    wait_n_click    xpath    ${footbal_section}
+    Comment    Open competitions section
+    wait_n_click    xpath    ${competite_section}
+    Comment    Select "Home" in first row of Premeire League section
+    wait_n_click    xpath    ${win_home_1st_row}
+    Comment    Input bet amount
+    wait_n_input    xpath    ${bet_input}    ${bet_amount}
+    Comment    Verification of odds
+    check_element_is_present    xpath    ${odds_element}
+    Comment    Verification of returns
+    check_element_is_present    xpath    ${returns_1}
+    check_element_is_present    xpath    ${returns_2}
     chrome_setup    https://github.com/SeleniumHQ/selenium/blob/master/py/selenium/webdriver/common/keys.py
     Press Keys    xpath=//body    \ue010
     [Teardown]    Close Browser
@@ -81,6 +81,7 @@ test3
     chrome_setup    ${url}
     wait_n_click    xpath    ${option_locator}
     select_element_from_dropdown    ${option_locator}    options    Bottom-Dollar Marketse
+    ${/}
     [Teardown]    Close Browser
 
 *** Keywords ***
